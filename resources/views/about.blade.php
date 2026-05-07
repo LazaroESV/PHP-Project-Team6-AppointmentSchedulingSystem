@@ -5,7 +5,7 @@
     <div class="card-body">
         <h2 class="card-title">About This Project</h2>
         <p class="card-text">
-            This project was built as a 4-week Laravel CRUD assignment using routes, controllers, Blade, MySQL, validation, and pagination.
+            This is a subsystem of a larger integrated Laravel application.
         </p>
     </div>
 </div>

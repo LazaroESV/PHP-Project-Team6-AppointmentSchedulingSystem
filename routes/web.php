@@ -1,16 +1,39 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\StudentController;
+use App\Http\Controllers\AppointmentController;
+
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::get('/appointments', [AppointmentController::class, 'index'])
+    ->name('appointments.index');
+
+Route::get('/appointments/create', [AppointmentController::class, 'create'])
+    ->name('appointments.create');
+
+Route::post('/appointments', [AppointmentController::class, 'store'])
+    ->name('appointments.store');
+
+Route::put('/appointments/{appointment}/complete',
+    [AppointmentController::class, 'complete'])
+    ->name('appointments.complete');
+
+Route::put('/appointments/{appointment}/cancel',
+    [AppointmentController::class, 'cancel'])
+    ->name('appointments.cancel');
+
+Route::post('/appointments/available-slots',
+    [AppointmentController::class, 'availableSlots'])
+    ->name('appointments.slots');
+
 Route::get('/about', function () {
     return view('about');
 })->name('about');
 
+/*
 Route::get('/hello/{name}', function ($name) {
     return "Hello, " . ucfirst($name) . "!";
 })->name('hello');
@@ -21,3 +44,4 @@ Route::post('/students', [StudentController::class, 'store'])->name('students.st
 Route::get('/students/{student}/edit', [StudentController::class, 'edit'])->name('students.edit');
 Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
 Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
+*/
