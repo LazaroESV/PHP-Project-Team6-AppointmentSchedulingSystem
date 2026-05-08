@@ -8,8 +8,10 @@ use App\Models\Customer;
 use App\Models\Staff;
 use App\Models\Service;
 
+Route::redirect('/', '/appointments');
 
-Route::get('/', function () {
+
+Route::get('/appointments', function () {
 
     return view('home', [
 
@@ -41,7 +43,7 @@ Route::get('/', function () {
 
 })->name('home');
 
-Route::get('/appointments', [AppointmentController::class, 'index'])
+Route::get('/appointments/index', [AppointmentController::class, 'index'])
     ->name('appointments.index');
 
 Route::get('/appointments/create', [AppointmentController::class, 'create'])
@@ -62,7 +64,7 @@ Route::post('/appointments/available-slots',
     [AppointmentController::class, 'availableSlots'])
     ->name('appointments.slots');
 
-Route::get('/about', function () {
+Route::get('/appointments/about', function () {
     return view('about');
 })->name('about');
 
