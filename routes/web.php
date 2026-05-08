@@ -3,9 +3,42 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AppointmentController;
 
+use App\Models\Appointment;
+use App\Models\Customer;
+use App\Models\Staff;
+use App\Models\Service;
+
 
 Route::get('/', function () {
-    return view('home');
+
+    return view('home', [
+
+        'appointmentsCount' =>
+            Appointment::count(),
+
+        'customersCount' =>
+            Customer::count(),
+
+        'staffCount' =>
+            Staff::count(),
+
+        'servicesCount' =>
+            Service::count(),
+
+        'bookedCount' =>
+            Appointment::where(
+                'status',
+                'booked'
+            )->count(),
+
+        'completedCount' =>
+            Appointment::where(
+                'status',
+                'completed'
+            )->count(),
+
+    ]);
+
 })->name('home');
 
 Route::get('/appointments', [AppointmentController::class, 'index'])

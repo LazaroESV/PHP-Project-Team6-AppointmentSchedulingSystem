@@ -9,16 +9,33 @@ use App\Models\Service;
 
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $appointments = Appointment::with([
+        $query = Appointment::with([
             'customer',
             'staff',
             'service'
-        ])->latest()->paginate(10);
+        ]);
+
+        if ($request->search) {
+
+            $query->whereHas('customer', function ($q) use ($request) {
+
+                $q->where('first_name', 'like',
+                    '%' . $request->search . '%')
+
+                ->orWhere('last_name', 'like',
+                    '%' . $request->search . '%');
+            });
+        }
+
+        $appointments = $query
+            ->latest()
+            ->paginate(10);
 
         return view('appointments.index', compact('appointments'));
     }
@@ -158,6 +175,21 @@ class AppointmentController extends Controller
 
     public function cancel(Appointment $appointment)
     {
+        $appointmentDateTime = Carbon::parse(
+            $appointment->appointment_date . ' ' .
+            $appointment->start_time
+        );
+
+        $cutoff = now()->addHours(2);
+
+        if ($appointmentDateTime <= $cutoff) {
+
+            return back()->withErrors([
+                'cancel' =>
+                    'Appointments cannot be cancelled within 2 hours.'
+            ]);
+        }
+
         $appointment->status = 'cancelled';
 
         $appointment->save();

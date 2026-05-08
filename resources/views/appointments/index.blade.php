@@ -2,7 +2,52 @@
 
 @section('content')
 
+<form method="GET"
+      action="{{ route('appointments.index') }}"
+      class="mb-4">
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <input type="text"
+                   name="search"
+                   class="form-control"
+                   placeholder="Search customer...">
+
+        </div>
+
+        <div class="col-md-2">
+
+            <button class="btn btn-primary w-100">
+                Search
+            </button>
+
+        </div>
+
+    </div>
+
+</form>
+
 <div class="container mt-5">
+
+    @if($errors->any())
+
+        <div class="alert alert-danger">
+
+            <ul class="mb-0">
+
+                @foreach($errors->all() as $error)
+
+                    <li>{{ $error }}</li>
+
+                @endforeach
+
+            </ul>
+
+        </div>
+
+    @endif
 
     <h2>Appointments</h2>
 
